@@ -1,0 +1,40 @@
+# {
+#   user(id:1) {
+#     id
+#     username
+#     email
+#     todos {
+#       id
+#       items {
+#         id
+#         description
+#         isDone
+#         priority
+#       }
+#     }
+#   }
+# }
+
+# mutation {
+#   del1: deleteTodo(todoId:16){
+#     ok
+#   }
+# }
+
+# mutation {
+#   createTodo(userId:1, todoTitle:"Prepare for graphql") {
+#     ok
+#   }
+# }
+
+# mutation {
+#   completeTodoItem(todoItemId:3) {
+#     ok
+#   }
+# }
+
+# mutation {
+#   addTodoItem(todoId:16, description:"Make sure to add order model for context") {
+#     ok
+#   }
+# }
