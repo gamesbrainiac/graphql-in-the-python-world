@@ -94,7 +94,7 @@ class DeleteTodo(graphene.Mutation):
             sess.query(Todo).filter_by(id=args.get('todo_id')).delete()
             sess.commit()
 
-        return DeleteUser(ok=True)
+        return DeleteTodo(ok=True)
 
 
 class AddTodoItem(graphene.Mutation):
