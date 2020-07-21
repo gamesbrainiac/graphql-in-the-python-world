@@ -34,7 +34,7 @@ class CreateUser(graphene.Mutation):
 
     # You might why this is not a classmethod
     # I honestly do not know the answer
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
             u = User(**args)
             sess.add(u)
@@ -48,7 +48,7 @@ class DeleteUser(graphene.Mutation):
 
     ok = graphene.Boolean()
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
 
             if args.get('id'):
@@ -70,9 +70,10 @@ class CreateTodo(graphene.Mutation):
     id = graphene.Int()
     ok = graphene.Boolean()
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
-            todo = Todo(title=args.get('todo_title'), user_id=args.get('user_id'))
+            todo = Todo(title=args.get('todo_title'),
+                        user_id=args.get('user_id'))
             sess.add(todo)
             sess.commit()
             u = sess.query(User).get(args.get('user_id'))
@@ -86,13 +87,14 @@ class DeleteTodo(graphene.Mutation):
 
     ok = graphene.Boolean()
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
-            sess.query(TodoItem).filter_by(todo_id=args.get('todo_id')).delete()
+            sess.query(TodoItem).filter_by(
+                todo_id=args.get('todo_id')).delete()
             sess.query(Todo).filter_by(id=args.get('todo_id')).delete()
             sess.commit()
 
-        return DeleteUser(ok=True)
+        return DeleteTodo(ok=True)
 
 
 class AddTodoItem(graphene.Mutation):
@@ -103,7 +105,7 @@ class AddTodoItem(graphene.Mutation):
     ok = graphene.Boolean()
     user = graphene.Field(UserObject)
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
             todo_item = TodoItem(**args, is_done=False)
             sess.add(todo_item)
@@ -118,9 +120,10 @@ class DeleteTodoItem(graphene.Mutation):
 
     ok = graphene.Boolean()
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
-            sess.query(TodoItem).filter_by(id=args.get('todo_item_id')).delete()
+            sess.query(TodoItem).filter_by(
+                id=args.get('todo_item_id')).delete()
             sess.commit()
         return DeleteTodoItem(ok=True)
 
@@ -132,11 +135,10 @@ class CompleteTodoItem(graphene.Mutation):
 
     ok = graphene.Boolean()
 
-    def mutate(self, args, request, info):
+    def mutate(self, info, **args):
         with make_session_scope() as sess:
             todo_item = sess.query(TodoItem).get(args.get('todo_item_id'))
             todo_item.is_done = True
             sess.add(todo_item)
             sess.commit()
         return CompleteTodoItem(ok=True)
-

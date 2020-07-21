@@ -18,7 +18,7 @@ class TodoObject(SQLAlchemyObjectType):
     id = graphene.Int()
     meta_info = graphene.Field(JSONString)
 
-    def resolve_meta_info(self, args, context, info):
+    def resolve_meta_info(self, info, **args):
         return self.meta_info
 
     class Meta:
