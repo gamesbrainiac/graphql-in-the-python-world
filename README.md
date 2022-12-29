@@ -1,6 +1,6 @@
 # Graphql in the Python World
 
-To run, simply execute run.sh. But, before doing so, make sure that
+To run, execute run.sh. But, before doing so, make sure that
 you have the right databases configured in models.py.
 
 You can also use docker-compose to run this application.
