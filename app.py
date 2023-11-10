@@ -18,7 +18,7 @@ app.add_url_rule('/graphiql',  # the endpoint
                      # We say that we *do* want a graphiql interface
                      graphiql=True
                  )
-)
+                 )
 
 
 @app.teardown_appcontext
@@ -27,4 +27,4 @@ def remove_session(exception=None):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)

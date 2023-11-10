@@ -5,7 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 
-engine = create_engine('postgresql://todoapi:todoapi@db:5432/postgres')
+engine = create_engine('postgresql://postgres:1234@localhost:5432/todoapidb')
+# engine = create_engine('sqlite:///foo.db')
 meta_data = MetaData(bind=engine)
 db_session = scoped_session(
     sessionmaker(autocommit=False,
@@ -33,7 +34,8 @@ class Todo(Base, PrimaryKeyIdMixin):
 
     title = Column(String(length=255))
 
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # exists in the db
+    user_id = Column(Integer, ForeignKey('users.id'),
+                     nullable=False)  # exists in the db
     user = relationship('User', back_populates='todos')  # does not exist in db
 
     items = relationship('TodoItem', back_populates='todo', lazy='subquery')
